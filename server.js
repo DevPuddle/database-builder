@@ -104,7 +104,7 @@ app.listen(process.env.PORT || PORT, () => {
 //Put after middleware
 //CRUD METHODS
 app.get('/', (request, response) => {
-    db.collection('alien-info').find().toArray()
+    db.collection('db-template').find().toArray()
         .then(data => {
             let nameList = data.map(item => item.speciesName)
             console.log(nameList)
@@ -124,7 +124,7 @@ app.post('/api', (request, response) => {
 })
 
 app.put('/updateEntry', (request, response) => {
-
+    console.log(request.body)
 })
 
 app.delete('/deleteEntry', (request, response) => {
