@@ -10,6 +10,9 @@
 //Install MongoDB 'npm install mongodb'.
 // const MongoClient = require('mongodb').MongoClient
 //----------------------------------------------------------
+//Choose port your server will be running on
+//const PORT = 8005
+//----------------------------------------------------------
 //To hide database credentials using a veriable, use a env file.
 //Install 'npm install dotenv'.
 // require('dotenv').config()
@@ -52,9 +55,16 @@ app.listen(process.env.PORT || PORT, () => {
     console.log(`Server running on port ${PORT}`)
 }) 
 */
-//----------------------------------------------------------
-//Choose port your server will be running on
-//const PORT = 8005
+/*
+NOW WE NEED MIDDLEWARE - 
+Use this syntax:
+It helps you manipulate the data from your startpoint & endpoint
+
+app.set('view engine', 'ejs')
+app.use(express.static('public'))
+app.use(express.urlencoded({extended: true}))
+app.use(express.json())
+*/
 
 
 const express = require('express')
@@ -64,7 +74,7 @@ const PORT = 8005
 require('dotenv').config()
 
 let db,
-    dbConnectionStr = process.env.DB_STRING
+    dbConnectionStr = process.env.DB_STRING,
     dbName = 'star-trek-api'
 
 MongoClient.connect(dbConnectionStr)
@@ -72,6 +82,11 @@ MongoClient.connect(dbConnectionStr)
         console.log(`Connected to ${dbName} Database`)
         db = client.db(dbName)
     })
+
+app.set('view engine', 'ejs')
+app.use(express.static('public'))
+app.use(express.urlencoded({extended: true}))
+app.use(express.json())
 
 app.listen(process.env.PORT || PORT, () => {
     console.log(`Server running on port ${PORT}`)
