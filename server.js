@@ -66,7 +66,15 @@ app.use(express.urlencoded({extended: true}))
 app.use(express.json())
 */
 
+//----------------------------------------------------------
+//Create a 'public' folder. Put 'main.js' & 'styles.css' files in.
+//Express will know exactly where to look for those
+//Create a folder called 'views' & add our 'index.ejs' in there.
+//----------------------------------------------------------
+//This is all the framework we need to create our project.
+//----------------------------------------------------------
 
+const { request, response } = require('express')
 const express = require('express')
 const app = express()
 const MongoClient = require('mongodb').MongoClient
@@ -90,6 +98,37 @@ app.use(express.json())
 
 app.listen(process.env.PORT || PORT, () => {
     console.log(`Server running on port ${PORT}`)
+})
+
+//----------------------------------------------------------
+//Put after middleware
+//CRUD METHODS
+app.get('/', (request, response) => {
+    db.collection('alien-info').find().toArray()
+        .then(data => {
+            let nameList = data.map(item => item.speciesName)
+            console.log(nameList)
+            response.render('index.ejs', {info: nameList})
+        })
+        .catch(error => console.log(error))
+})
+app.post('/api', (request, response) => {
+    console.log('Post Heard')
+    db.collection('db-template').insertOne(
+        request.body
+    )
+    .then(result => {
+        console.log(result)
+        response.redirect('/')
+    })
+})
+
+app.put('/updateEntry', (request, response) => {
+
+})
+
+app.delete('/deleteEntry', (request, response) => {
+
 })
 
 
